@@ -1,0 +1,36 @@
+version: '3.1'
+services: 
+  db:
+    container_name: mysql-server
+    image: mysql
+    restart: always
+    environment: 
+    - MYSQL_ROOT_PASSWORD=root
+    - MYSQL_DATABASE=bbuster_flix
+    - TZ=America/Sao_Paulo
+    volumes: 
+    - ./src/:/usr/src/app
+    - type: volume
+      source: db-volume
+      target: /data/db
+
+  apps:
+    container_name: apps
+    build: .
+    entrypoint: ["/bin/bash", "./entrypoint.sh"]
+    depends_on: 
+     - db
+    environment: 
+     - DIALECT=mysql
+     - HOST=mysql-server
+     - USER=root
+     - DATABASE=bbuster_flix
+     - PASSWORD=root
+     - DB_PORT=3306
+     - NODE_ENV=dockerDev
+     - WAIT_HOSTS=db:3306
+    ports: 
+     - 8080:8080
+
+volumes:
+  db-volume:
