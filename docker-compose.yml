@@ -9,7 +9,7 @@ services:
     - MYSQL_DATABASE=bbuster_flix
     - TZ=America/Sao_Paulo
     volumes: 
-    - ./src/:/usr/src/app
+    - ./api/:/usr/src/app
     - type: volume
       source: db-volume
       target: /data/db

@@ -3,21 +3,34 @@ const _ = require('lodash')
 
 module.exports = {
   async findAll (req, res) {
-    const movies = await Models.Movie.findAll({ raw: true })
-    const videoStore = await Models.VideoStore.findAll({ raw: true })
-    let idRented = videoStore[0].rented.replace(/[\\"]/g, '').split(',')
+    try {
+      const titulo = req.body.titulo
+      const movies = await Models.Movie.findAll({ raw: true })
+      const videoStore = await Models.VideoStore.findAll({ raw: true })
+      let idRented = videoStore[0].rented.replace(/[\\"]/g, '').split(',')
 
-    idRented = idRented.map(R => ({
-      id: Number(R)
-    }))
+      if (titulo) {
+        const movie = await Models.Movie.findOne({ raw: true, where: { titulo } })
 
-    const moviesNotRented = _.xorBy(movies, idRented, 'id')
+        return res.status(200).json(movie)
+      }
 
-    if (!movies) {
-      throw new Error('Não foi possivel encontrar informações!')
+      idRented = idRented.map(R => ({
+        id: Number(R)
+      }))
+
+      let moviesNotRented = _.xorBy(movies, idRented, 'id')
+
+      moviesNotRented = moviesNotRented.filter(R => R.id !== 0)
+
+      if (!movies) {
+        throw new Error('Não foi possivel encontrar informações!')
+      }
+      return res.status(200).json(moviesNotRented)
     }
-
-    return res.status(200).json(moviesNotRented)
+    catch (error) {
+      return res.status(500).json(error.message)
+    }
   },
 
   async rent (req, res) {

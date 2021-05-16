@@ -7,8 +7,8 @@ routes.post('/create/user', User.create)
 routes.post('/login', User.login)
 routes.post('/logout', User.logout)
 
-routes.get('/movies', Movie.findAll)
-routes.put('/movies/rent/:id', Movie.rent)
-routes.put('/movies/giveBack/:id', Movie.giveBack)
+routes.get('/movies', Auth.authenticateToken, Movie.findAll)
+routes.put('/movies/rent/:id', Auth.authenticateToken, Movie.rent)
+routes.put('/movies/giveBack/:id', Auth.authenticateToken, Movie.giveBack)
 
 module.exports = routes

@@ -30,22 +30,26 @@ module.exports = {
   },
 
   async login (req, res) {
-    const email = req.body.email
-    const dataValues = await Models.User.findOne({ where: { email } })
-    const pass = uuid(req.body.password, MY_NAMESPACE)
-    const confirmPass = dataValues.password.localeCompare(pass)
-    if (confirmPass !== 0) {
-      res.status(400).send({
-        message: 'Usuário não encontrado!'
-      })
+    try {
+      const email = req.body.email
+      const dataValues = await Models.User.findOne({ raw: true, where: { email } })
+      const pass = uuid(req.body.password, MY_NAMESPACE)
+      const confirmPass = dataValues.password.localeCompare(pass)
+      if (confirmPass !== 0) {
+        res.status(400).send({
+          message: 'Usuário não encontrado!'
+        })
+      }
+      let token = jwt.sign({ email: req.body.email }, process.env.TOKEN_SECRET, { expiresIn: 84600 });
+      // window.localStorage.setItem('ACCESS_TOKEN', token)
+      res.json(token);
+    } catch (error) {
+      return res.status(500).send({ error: error.message })
     }
-    let token = jwt.sign({ email: req.body.email }, process.env.TOKEN_SECRET, { expiresIn: 84600 });
-    localStorage.setItem('ACCESS_TOKEN', token)
-    res.json(token);
   },
 
   async logout (req, res) {
-    localStorage.removeItem('ACCESS_TOKEN')
+    // window.localStorage.removeItem('ACCESS_TOKEN')
 
     return res.status(200).json('Logoff efetuado com sucesso!')
   }
