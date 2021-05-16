@@ -9,12 +9,6 @@ module.exports = {
       const videoStore = await Models.VideoStore.findAll({ raw: true })
       let idRented = videoStore[0].rented.replace(/[\\"]/g, '').split(',')
 
-      if (titulo) {
-        const movie = await Models.Movie.findOne({ raw: true, where: { titulo } })
-
-        return res.status(200).json(movie)
-      }
-
       idRented = idRented.map(R => ({
         id: Number(R)
       }))
@@ -22,6 +16,11 @@ module.exports = {
       let moviesNotRented = _.xorBy(movies, idRented, 'id')
 
       moviesNotRented = moviesNotRented.filter(R => R.id !== 0)
+
+      if (titulo) {
+        const movieFilterByName = moviesNotRented.filter(R => R.titulo.includes(titulo))
+        return res.status(200).json(movieFilterByName)
+      }
 
       if (!movies) {
         throw new Error('Não foi possivel encontrar informações!')
