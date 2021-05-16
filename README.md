@@ -14,11 +14,11 @@ API para locar/buscar filmes na Locadora-Online
   - Executar os migrations para criação das tabelas ```npm run migration```
   - Executar os seeds para popular as tabelas ```npm run seed```
   - Executar o projeto ```npm start```
-  - Pronto o projeto estará rodando na porta que foi setado no .env do contrário na porta 8086 
+  - Pronto o projeto estará rodando na porta que foi setada no .env do contrário na porta 8086 
   - Esta é a URL raíz de Acesso ```http://localhost:PORTA/api/bbFlix/ ``` 
-3(opcional). Acessar a pasta do projeto e rodar ```docker-compose up -d```
+3. **(opcional)**. Acessar a pasta do projeto e rodar ```docker-compose up -d```
   - Após o docker realizar as operações projeto estará rodando na porta 8080
-  - Esta é a URL raíz de Acesso ```http://localhost:8080/api/bbFlix/ ``` 
+  - Esta é a URL raíz de Acesso ```http://localhost:8080/api/bbFlix/ ```
 
 ## Rota para Usuários
 
@@ -62,7 +62,7 @@ API para locar/buscar filmes na Locadora-Online
 }
 ```
 
-*/movies/giveBack/:id* - Para fazer um aluguel de um Filme
+*/movies/giveBack/:id* - Para devolver um aluguel de um Filme
   - Exemplo para devolver um filme usando axios no front
   **token** = recuperado da rota */login*
 ```json
@@ -81,22 +81,22 @@ API para locar/buscar filmes na Locadora-Online
 
 
 */movies* - Método para listar os filmes buscando pelo nome do título
-- Exemplo para buscar um filme no body da requisição **req.body.titulo**
+- Exemplo para buscar um filme pelo seu titulo no body da requisição **req.body.titulo**
   - *Não esquecendo do token* conforme os exemplos acima
 ```json
 {
-	"titulo": "admin@admin.com"
+	"titulo": "Batman Begins"
 }
 ```
 
 ## Criar filmes no banco
- - Acessar a base de dados e rodar e user o script abaixo como exemplo conforme o necessário
+ - Acessar a base de dados e rodar o script abaixo como exemplo conforme o necessário
  ```sql
   INSERT INTO movies (titulo,diretor,createdAt, updatedAt) VALUES('Army of the Dead: Invasão em Las Vegas', 'Zack Snyder', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
  ```
 
  ## Exemplo de um arquivo .env
-  # .env
+  ```
   PORT=8080
   HOST=localhost
   USER=root
@@ -106,6 +106,7 @@ API para locar/buscar filmes na Locadora-Online
   HDOCKER=mysql-server
   NODE_ENV=dockerDev
   PASSWORD_LOCAL=minhaSenhaLocal
+  ```
 
  ## Libs Usadas
 
