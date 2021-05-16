@@ -1,1 +1,115 @@
 # BbusterFlix
+API para locar/buscar filmes na Locadora-Online
+
+## Requisitos
+
+*Node JS*
+*Mysql*
+**Docker - Docker-Compose (Opcional)**
+
+## Executar o Projeto
+1. Criar um arquivo .env na raíz do projeto
+2. Criar o banco de dados no MYSQL com o nome setado no .env
+3. Acessar a pasta do projeto e rodar ```npm i ```
+  - Executar os migrations para criação das tabelas ```npm run migration```
+  - Executar os seeds para popular as tabelas ```npm run seed```
+  - Executar o projeto ```npm start```
+  - Pronto o projeto estará rodando na porta que foi setado no .env do contrário na porta 8086 
+  - Esta é a URL raíz de Acesso ```http://localhost:PORTA/api/bbFlix/ ``` 
+3(opcional). Acessar a pasta do projeto e rodar ```docker-compose up -d```
+  - Após o docker realizar as operações projeto estará rodando na porta 8080
+  - Esta é a URL raíz de Acesso ```http://localhost:8080/api/bbFlix/ ``` 
+
+## Rota para Usuários
+
+**Método POST**
+*/create/user* - Criará um novo usuário
+  - Exemplo para criação do usuário
+```json
+  {
+	"username": "username",
+	"email": "email@email.com",
+	"password": "password"
+}
+```
+
+*/login* - Para fazer o login na API
+  - Exemplo para fazer o login do usuário
+```json
+  {
+	"email": "email@email.com",
+	"password": "password"
+}
+```
+
+*/logout* - Para fazer o logout na API
+
+
+## Rota para os Filmes
+
+**Método PUT**
+*/movies/rent/:id* - Para fazer um aluguel de um Filme
+  - Exemplo para alugar um filme usando axios no front
+  **token** = recuperado da rota */login*
+```json
+{
+  "method": "put",
+  "url": "/movies/rent/:id",
+  "headers": {
+    "Authorization": "Bearer + token",
+    "Content-Type": "application/json"
+  }
+}
+```
+
+*/movies/giveBack/:id* - Para fazer um aluguel de um Filme
+  - Exemplo para devolver um filme usando axios no front
+  **token** = recuperado da rota */login*
+```json
+{
+  "method": "put",
+  "url": "/movies/giveBack/:id",
+  "headers": {
+    "Authorization": "Bearer + token",
+    "Content-Type": "application/json"
+  }
+}
+```
+
+**Método GET**
+*/movies* - Método para listar os filmes
+
+
+*/movies* - Método para listar os filmes buscando pelo nome do título
+- Exemplo para buscar um filme no body da requisição **req.body.titulo**
+  - *Não esquecendo do token* conforme os exemplos acima
+```json
+{
+	"titulo": "admin@admin.com"
+}
+```
+
+## Criar filmes no banco
+ - Acessar a base de dados e rodar e user o script abaixo como exemplo conforme o necessário
+ ```sql
+  INSERT INTO movies (titulo,diretor,createdAt, updatedAt) VALUES('Army of the Dead: Invasão em Las Vegas', 'Zack Snyder', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+ ```
+
+ ## Exemplo de um arquivo .env
+  # .env
+  PORT=8080
+  HOST=localhost
+  USER=root
+  PASSWORD=root
+  DATABASE=bbuster_flix
+  TOKEN_SECRET=Um4S3nh4MU1t0F0rt3
+  HDOCKER=mysql-server
+  NODE_ENV=dockerDev
+  PASSWORD_LOCAL=minhaSenhaLocal
+
+ ## Libs Usadas
+
+* Sequelize
+* Express
+* mysql2
+* Express.lodash
