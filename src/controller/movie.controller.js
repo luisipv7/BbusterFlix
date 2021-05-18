@@ -1,5 +1,6 @@
 const Models = require('../models/index')
 const _ = require('lodash')
+const Queue = require('../config/queue')
 
 module.exports = {
   async findAll (req, res) {
@@ -34,46 +35,30 @@ module.exports = {
 
   async rent (req, res) {
 
-    try {
-      const id = await req.params.id
-      const videoStore = await Models.VideoStore.findAll({ raw: true })
-      let ids = videoStore[0].rented.replace(/[\\"]/g, '').split(',')
-      await ids.push(id)
-      videoStore[0].rented = await ids.toString()
-      const [update] = await Models.VideoStore.update(videoStore[0], {
-        where: { id: videoStore[0].id }
-      })
+    const id = await req.params.id
+    const idMovie = await Models.Movie.findByPk(id)
 
-      if (update) {
-        const videoStoreUpdated = await Models.VideoStore.findByPk(videoStore[0].id)
-        return res.status(200).json(videoStoreUpdated)
-      }
-      throw new Error('Usuário inexistente!')
-    } catch (error) {
-      return res.status(500).send({ error: error.message });
+    if (!idMovie) {
+      return res.status(200).json('Filme não encontrado !!!')
     }
+    await Queue.add('rentMovie', { id })
+    // setTimeout(async () => {
+    return res.status(200).json(idMovie)
+    // }, 3000);
   },
 
   async giveBack (req, res) {
-    try {
-      const id = await req.params.id
-      console.log(id)
-      const videoStore = await Models.VideoStore.findAll({ raw: true })
-      let ids = videoStore[0].rented.replace(/[\\"]/g, '').split(',')
-      ids = _.xor([id], ids)
-      videoStore[0].rented = await ids.toString()
+    const id = await req.params.id
+    const idMovie = await Models.Movie.findByPk(id)
 
-      const [update] = await Models.VideoStore.update(videoStore[0], {
-        where: { id: videoStore[0].id }
-      })
-
-      if (update) {
-        const videoStoreUpdated = await Models.VideoStore.findByPk(videoStore[0].id)
-        return res.status(200).json(videoStoreUpdated)
-      }
-      throw new Error('Usuário inexistente!')
-    } catch (error) {
-      return res.status(500).send({ error: error.message })
+    if (!idMovie) {
+      return res.status(200).json('Filme não encontrado !!!')
     }
+
+    await Queue.add('giveBack', { id })
+    // setTimeout(() => {
+    return res.status(200).json(idMovie)
+    // }, 3000);
+
   }
 }

@@ -5,7 +5,7 @@ API para locar/buscar filmes na Locadora-Online
 
 *Node JS*
 *Mysql*
-**Docker - Docker-Compose (Opcional)**
+*Redis*
 
 ## Executar o Projeto
 1. Criar um arquivo .env na raíz do projeto
@@ -16,9 +16,7 @@ API para locar/buscar filmes na Locadora-Online
   - Executar o projeto ```npm start```
   - Pronto o projeto estará rodando na porta que foi setada no .env do contrário na porta 8086 
   - Esta é a URL raíz de Acesso ```http://localhost:PORTA/api/bbFlix/ ``` 
-3. **(opcional)**. Acessar a pasta do projeto e rodar ```docker-compose up -d```
-  - Após o docker realizar as operações projeto estará rodando na porta 8080
-  - Esta é a URL raíz de Acesso ```http://localhost:8080/api/bbFlix/ ```
+  - Rodar o Redis localmente
 
 ## Rota para Usuários
 
@@ -103,9 +101,9 @@ API para locar/buscar filmes na Locadora-Online
   PASSWORD=root
   DATABASE=bbuster_flix
   TOKEN_SECRET=Um4S3nh4MU1t0F0rt3
-  HDOCKER=mysql-server
-  NODE_ENV=dockerDev
   PASSWORD_LOCAL=minhaSenhaLocal
+  REDIS_HOST=0.0.0.0
+  REDIS_PORT=6379
   ```
 
  ## Libs Usadas
@@ -113,4 +111,3 @@ API para locar/buscar filmes na Locadora-Online
 * Sequelize
 * Express
 * mysql2
-* Express.lodash
