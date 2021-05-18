@@ -1,42 +1,54 @@
 version: '3.1'
 services: 
   db:
-    container_name: mysql-server
+    container_name: mysql
     image: mysql
+    networks: 
+      - minharede
     restart: always
-    environment: 
-    - MYSQL_ROOT_PASSWORD=root
-    - MYSQL_DATABASE=bbuster_flix
-    - TZ=America/Sao_Paulo
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=bbuster_flix
+      - TZ=America/Sao_Paulo    
     volumes: 
-    - ./api/:/usr/src/app
+    - ./app/:/usr/src/app
     - type: volume
       source: db-volume
       target: /data/db
+    ports: 
+      - 3308:3306
 
   redis:
     container_name: redis
-    image: redis:alpine
+    image: redis
+    networks: 
+      - minharede
     ports:
-      - "6379:6379"
+      - 6379:6379
 
   apps:
     container_name: apps
     build: .
+    networks: 
+      - minharede
     entrypoint: ["/bin/bash", "./entrypoint.sh"]
     depends_on: 
      - db
-    environment: 
-     - DIALECT=mysql
-     - HOST=mysql-server
-     - USER=root
-     - DATABASE=bbuster_flix
-     - PASSWORD=root
-     - DB_PORT=3306
-     - NODE_ENV=dockerDev
-     - WAIT_HOSTS=db:3306
+     - redis
+    environment:
+      - HOST=mysql
+      - USER=root
+      - DATABASE=bbuster_flix
+      - PASSWORD=root
+      - DIALECT=mysql
+      - DB_PORT=3308
+      - WAIT_HOSTS=db:3308
+      - WAIT_HOSTS=redis:6379    
     ports: 
-     - 8080:8080
+     - 3000:3000
 
 volumes:
   db-volume:
+
+networks: 
+  minharede:
