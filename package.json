@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start:queue": "node src/server.js",
-    "start:dev": "node src/queue.js",
+    "start:server": "node src/server.js",
+    "start:queue": "node src/queue.js",
     "start": "npm-run-all -p start:*",
     "migration": "npx sequelize-cli db:migrate",
     "seed": "npx sequelize-cli db:seed:all"

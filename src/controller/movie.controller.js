@@ -42,9 +42,7 @@ module.exports = {
       return res.status(200).json('Filme não encontrado !!!')
     }
     await Queue.add('rentMovie', { id })
-    // setTimeout(async () => {
     return res.status(200).json(idMovie)
-    // }, 3000);
   },
 
   async giveBack (req, res) {
@@ -56,9 +54,7 @@ module.exports = {
     }
 
     await Queue.add('giveBack', { id })
-    // setTimeout(() => {
     return res.status(200).json(idMovie)
-    // }, 3000);
 
   }
 }

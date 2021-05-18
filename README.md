@@ -14,9 +14,12 @@ API para locar/buscar filmes na Locadora-Online
   - Executar os migrations para criação das tabelas ```npm run migration```
   - Executar os seeds para popular as tabelas ```npm run seed```
   - Executar o projeto ```npm start```
-  - Pronto o projeto estará rodando na porta que foi setada no .env do contrário na porta 8086 
+  - Pronto o projeto estará rodando na porta que foi setada no .env 
   - Esta é a URL raíz de Acesso ```http://localhost:PORTA/api/bbFlix/ ``` 
   - Rodar o Redis localmente
+4. Executar o Redis
+ - Existe um docker-compose com a imagem do redis para não rodar um redis localmente
+    - ```docker-compose up -d ```
 
 ## Rota para Usuários
 
@@ -95,7 +98,7 @@ API para locar/buscar filmes na Locadora-Online
 
  ## Exemplo de um arquivo .env
   ```
-  PORT=8080
+  PORT=3000
   HOST=localhost
   USER=root
   PASSWORD=root

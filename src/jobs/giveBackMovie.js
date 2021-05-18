@@ -13,12 +13,17 @@ module.exports = {
 
 
 async function giveBack (idMovie) {
-  const videoStore = await Models.VideoStore.findAll({ raw: true })
-  let ids = videoStore[0].rented.replace(/[\\"]/g, '').split(',')
-  ids = _.xor([idMovie], ids)
-  videoStore[0].rented = await ids.toString()
+  try {
+    const videoStore = await Models.VideoStore.findAll({ raw: true })
+    let ids = videoStore[0].rented.replace(/[\\"]/g, '').split(',')
+    ids = _.xor([idMovie], ids)
+    videoStore[0].rented = await ids.toString()
 
-  await Models.VideoStore.update(videoStore[0], {
-    where: { id: videoStore[0].id }
-  })
+    await Models.VideoStore.update(videoStore[0], {
+      where: { id: videoStore[0].id }
+    })
+  } catch (error) {
+    throw new Error(error.message)
+  }
+
 }
