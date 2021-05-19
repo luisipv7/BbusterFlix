@@ -99,10 +99,11 @@ API para locar/buscar filmes na Locadora-Online
  ## Exemplo de um arquivo .env
   ```
   PORT=3000
-  HOST=localhost
-  USER=root
-  PASSWORD=root
+  DB_HOST=localhost
+  DB_USER=root
+  DB_PASSWORD=root
   DATABASE=bbuster_flix
+  DB_PORT=3306
   TOKEN_SECRET=Um4S3nh4MU1t0F0rt3
   PASSWORD_LOCAL=minhaSenhaLocal
   REDIS_HOST=0.0.0.0
