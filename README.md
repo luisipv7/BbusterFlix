@@ -105,7 +105,6 @@ API para locar/buscar filmes na Locadora-Online
   DATABASE=bbuster_flix
   DB_PORT=3306
   TOKEN_SECRET=Um4S3nh4MU1t0F0rt3
-  PASSWORD_LOCAL=minhaSenhaLocal
   REDIS_HOST=0.0.0.0
   REDIS_PORT=6379
   ```
